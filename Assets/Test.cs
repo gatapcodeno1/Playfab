@@ -5,37 +5,57 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
 using TMPro;
+using Newtonsoft.Json;
 
 public class Test : MonoBehaviour
 {
 
-
+    public string messageText ;
+    public string emailInput = "kyo.dat.01@gmail.com";
+    public string password = "123456";
+  
 
     private void Start()
     {
-        Login();
-        Debug.Log(testnow.Instance.Get());
 
+        
+        //ResetPassword();
+        
+        
     }
 
-    void Login()
+    public void Exectute()
     {
-        var request = new LoginWithCustomIDRequest
+
+        var request = new ExecuteCloudScriptRequest
         {
-            CustomId = SystemInfo.deviceUniqueIdentifier,
-            CreateAccount = true
+            FunctionName = "hello",
+            FunctionParameter = new
+            {
+                name = "Dat"
+            }
         };
-        PlayFabClientAPI.LoginWithCustomID(request, OnSuccess, OnError);
+        PlayFabClientAPI.ExecuteCloudScript(request, OnExecute, OnError);
 
     }
 
-    void OnSuccess(LoginResult loginResult)
+    void OnExecute(ExecuteCloudScriptResult result)
     {
+        //testnow.Instance.Text.text = result.FunctionResult.ToString();
+    }
+
+
+    
+
+    
+
+    
+
+    void OnSuccess(RegisterPlayFabUserResult result)
+    {
+
         Debug.Log("Successful Login/Account Create! ");
-        SendLeaderBoard(5);
-        GetLeaderBoard();
-        SaveApperance();
-        GetTitleData();
+        
     }
 
     void OnError(PlayFabError error)
@@ -45,75 +65,9 @@ public class Test : MonoBehaviour
     }
 
 
-    public void SaveApperance()
-    {
-        // Debug.Log(test.Get());
+   
 
-    }
-
-    void GetTitleData()
-    {
-        PlayFabClientAPI.GetTitleData(new GetTitleDataRequest(), OnTitleDataReceived, OnError);
-    }
-
-
-    public void OnTitleDataReceived(GetTitleDataResult result)
-    {
-        if (result.Data == null || !result.Data.ContainsKey("Message"))
-        {
-            Debug.Log("No testkey Data");
-        }
-        else
-        {
-            testnow.Instance.Text.text = result.Data["Message"];
-            Debug.Log("Message :" + result.Data["Message"]);
-        }
-    }
     
 
-    public void OnDataSend(UpdateUserDataResult result)
-    {
-        Debug.Log("Success send data");
-    }
 
-    void SendLeaderBoard(int score)
-    {
-        var request = new UpdatePlayerStatisticsRequest
-        {
-            Statistics = new List<StatisticUpdate> { 
-                new StatisticUpdate {
-                    StatisticName = "PlatformScore",
-                    Value = score 
-                } 
-            }
-        };
-        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderBoardUpdate, OnError);
-    }
-
-    void OnLeaderBoardUpdate(UpdatePlayerStatisticsResult result)
-    {
-        Debug.Log("Sucess LeaderBoard Update");
-    }
-
-    public void GetLeaderBoard()
-    {
-        var request = new GetLeaderboardRequest
-        {
-            StatisticName = "PlatformScore",
-            StartPosition = 0,
-            MaxResultsCount = 10
-        };
-        PlayFabClientAPI.GetLeaderboard(request, OnLeaderboardGet, OnError);
-        
-    }
-
-    public void OnLeaderboardGet(GetLeaderboardResult result)
-    {
-       
-        foreach(var item in result.Leaderboard)
-        {
-           
-            Debug.Log(item.Position + " " + item.PlayFabId + " " + item.StatValue);
-        }
-    }
 }
