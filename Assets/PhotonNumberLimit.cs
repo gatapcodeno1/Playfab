@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PhotonNumberLimit : MonoBehaviour
+public class PhotonNumberLimit : MonoBehaviourPun,IPunObservable
 {
     public static PhotonNumberLimit instance;
 

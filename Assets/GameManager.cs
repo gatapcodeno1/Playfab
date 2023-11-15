@@ -58,8 +58,8 @@ public class GameManager : MonoBehaviour
         //else numberObj = this.SpawnLocal(number);
         numberObj = this.SpawnNetwork(number);
         Vector3 pos = this.StartPoint();
-        pos.x += colNumber * 1.5f;
-        pos.y -= lineNumber * 1.5f;
+        pos.x += colNumber * 1f;
+        pos.y -= lineNumber * 1f;
         numberObj.transform.position = pos;
         PhotonNumber photonNumber = numberObj.GetComponent<PhotonNumber>();
         photonNumber.Set(this.GetNumber());
