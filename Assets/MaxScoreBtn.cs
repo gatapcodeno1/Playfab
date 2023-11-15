@@ -60,6 +60,7 @@ public class MaxScoreBtn : MonoBehaviour
         foreach (var item in result.Leaderboard)
         {
             maxScore.text = Mathf.Max(int.Parse(maxScore.text), int.Parse(item.StatValue.ToString())).ToString();
+            Debug.Log(item.Position + " " + item.DisplayName + " " + item.StatValue);
         }
     }
 
